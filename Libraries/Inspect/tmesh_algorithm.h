@@ -18,6 +18,9 @@
   *		    版本9 : 磁场变化为主,当磁场测出来有车,但是雷达的频域和时域都无车时,那么认为无车,或者认为有车;当磁场测出来无车时,那就是无车.
   *		    版本10: 过30秒测一次雷达,再过60秒测一次雷达,接着就10分钟测一次雷达.
   *		    版本11: 经过诸多改动.
+  *		    版本15: 当雷达没有波动时,两个雷达之间的检测间隔需要1分钟以上
+  *		    版本16: 取6次雷达值,把dif值最大的那次去掉,然后进行取平均值
+  *		    版本17: 雷达dif小于5的时候就强制判定为有车
   *
   *********************************************************************************************************
   */
@@ -161,6 +164,14 @@ typedef __packed struct
 
 typedef __packed struct
 {
+	unsigned short int					fre_last2_max;
+	unsigned short int					fre_last2_min;
+	unsigned short int					fre_last2_latest;
+	signed int						time_last2_max;
+	signed int						time_last2_min;
+	signed int						time_last2_latest;
+	unsigned int						last2_minutes;
+	
 	unsigned short int					fre_last_max;
 	unsigned short int					fre_last_min;
 	unsigned short int					fre_last_latest;
@@ -401,5 +412,13 @@ u8 talgo_check_mag_motion_lately(u8 val);
  @Return				none
 **********************************************************************************************************/
 void QMC5883L_InitBackgroud_cmd(u16 x, u16 y, u16 z);
+
+/**********************************************************************************************************
+ @Function			talgo_init
+ @Description			init the parameters
+ @Input				none
+ @Return				none
+**********************************************************************************************************/
+void talgo_init(void);
 
 #endif

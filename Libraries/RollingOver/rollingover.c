@@ -93,7 +93,7 @@ bool RollingOverCheckToActive(void)
 		Radio_Trf_Printf("roldw:%d,%d,%d,%d,%d", rollingover_time[0], rollingover_time[1], rollingover_time[2], rollingover_time[3], rollingover_time[4]);
 		Radio_Trf_Printf("rolup:[4]-[0]=%d", (rollingover_time[4] - rollingover_time[0]));
 #endif
-		if (((rollingover_time[4] - rollingover_time[0]) < 12) && ((rollingover_time[4] - rollingover_time[0]) > 8)) {
+		if (((rollingover_time[4] - rollingover_time[0]) < 12) && ((rollingover_time[4] - rollingover_time[0]) >= 8)) {
 			do {
 				Delay_MS(10);
 				TCFG_EEPROM_SetActiveDevice(1);
@@ -168,6 +168,7 @@ void RollingOverMercuryBreak(void)
 void RollingOverMercuryClose(void)
 {
 	if (DeviceIdleMode == false) {
+		talgo_init();
 		BEEP_CtrlRepeat_Extend(1, 100, 0);
 	}
 	
@@ -184,21 +185,21 @@ void RollingOverMercuryClose(void)
 			TCFG_EEPROM_SetActiveDevice(0);
 			MainRollingEnteredDownSleep();												//已进入倒放休眠状态
 #ifdef ROLLINGOVER_LOG_RF_PRINT
-			Radio_Trf_Printf("Sleep Begin TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
+			//Radio_Trf_Printf("Sleep Begin TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
 #endif
 		}
 		/* 15Sec 内处理 */
 		else if ((TimeBeforeIdle + ROLLINGOVER_WAIT_SLEEP_TIME) > Stm32_GetSecondTick()) {
 			MainRollingEnteredDownSleepKeepActived();										//将进入倒放休眠状态前保持工作
 #ifdef ROLLINGOVER_LOG_RF_PRINT
-			Radio_Trf_Printf("Sleep Before TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
+			//Radio_Trf_Printf("Sleep Before TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
 #endif
 		}
 		/* 15Sec ~ 15Min */
 		else {
 			MainRollingEnteringDownSleep();												//将进入倒放休眠
 #ifdef ROLLINGOVER_LOG_RF_PRINT
-			Radio_Trf_Printf("Sleep Right TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
+			//Radio_Trf_Printf("Sleep Right TBI:%d, SYS:%d, EEPROM:%d", TimeBeforeIdle, Stm32_GetSecondTick(), TCFG_EEPROM_GetActiveDevice());
 #endif
 		}
 	}

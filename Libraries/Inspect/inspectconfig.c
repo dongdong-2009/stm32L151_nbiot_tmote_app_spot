@@ -173,7 +173,7 @@ void Inspect_Spot_ExistenceDetect(void)
 	
 	/* 数据存于缓存 */
 	if (SpotStatusDataBackUp.timeCounter != 0) {
-		if ((MAG_NO_CHANGE == talgo_check_mag_motion_lately(8)) && ((time2send_spot+8) < Stm32_GetSecondTick())) {
+		if ((time2send_spot + 8) < Stm32_GetSecondTick()) {
 			if (status_pre != SpotStatusDataBackUp.spot_status) {
 				Inspect_Message_SpotStatusEnqueue(SpotStatusDataBackUp);
 				status_pre = SpotStatusDataBackUp.spot_status;
