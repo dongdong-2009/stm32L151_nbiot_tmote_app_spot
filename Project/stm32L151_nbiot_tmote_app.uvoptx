@@ -177,6 +177,21 @@
           <WinNumber>1</WinNumber>
           <ItemText>DNSClientHandler,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DNS_SendBuf</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DNS_RecvBuf</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DNS_DataStack</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

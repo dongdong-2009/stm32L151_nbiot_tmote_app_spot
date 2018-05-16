@@ -19,6 +19,7 @@
 
 unsigned char DNS_SendBuf[DNS_BUFFER_SIZE];
 unsigned char DNS_RecvBuf[DNS_BUFFER_SIZE];
+unsigned char DNS_DataStack[DNS_DATASTACK_SIZE];
 
 /**********************************************************************************************************
  @Function			void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
@@ -35,11 +36,21 @@ void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
 	pClient->Recvbuf_size								= sizeof(DNS_RecvBuf);
 	pClient->Sendlen									= 0;
 	pClient->Recvlen									= 0;
+	pClient->DataProcessStack							= DNS_DataStack;
+	pClient->DataProcessStack_size						= sizeof(DNS_DataStack);
 	
 	pClient->Command_Timeout_Sec							= DNS_COMMAND_TIMEOUT_SEC;
 	pClient->Command_Failure_Cnt							= DNS_COMMAND_FAILURE_CNT;
 	
 	pClient->LetterCounter								= 0;
+	
+	pClient->AnalysisData[0].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME1;
+	pClient->AnalysisData[1].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME2;
+	for (unsigned char i = 0; i < DNS_ANALYSIS_DATA; i++) {
+		sprintf((char *)pClient->AnalysisData[i].hostname, "%s", pClient->AnalysisData[i].hostnameAddr);
+	}
+	
+	
 	
 	
 	

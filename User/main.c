@@ -438,8 +438,7 @@ void MainHandleRoutine(void)
 
 #ifdef	DEVICE_DEBUG
 /********************************************* DEBUG *****************************************************/
-unsigned char queryname[256];
-unsigned char hostname[256];
+
 /****************************************** Debug Ending *************************************************/
 /**********************************************************************************************************
  @Function			void DeBugMain(void)
@@ -454,16 +453,14 @@ void DeBugMain(void)
 	NBIOT_Transport_Init(&NbiotATCmdHandler);												//NBIOT数据传输接口初始化
 	NBIOT_Client_Init(&NbiotClientHandler, &NbiotATCmdHandler);									//NBIOT客户端初始化
 	
-	DNS_Transport_Init(&DNSSocketNetHandler, &NbiotClientHandler, 5000, "114.114.114.114", 53);		//MqttSN数据传输接口初始化
-	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler);									//MQTTSN客户端初始化
+	DNS_Transport_Init(&DNSSocketNetHandler, &NbiotClientHandler, 5000, "114.114.114.114", 53);		//DNS数据传输接口初始化
+	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler);									//DNS客户端初始化
 	
-	sprintf((char *)hostname, "%s", "movebroad.cn");
+	DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
 	
-	DNS_Seperate(&DNSClientHandler, queryname, hostname);
+	DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
 	
 	while (1) {
-		
-		
 		
 		
 		

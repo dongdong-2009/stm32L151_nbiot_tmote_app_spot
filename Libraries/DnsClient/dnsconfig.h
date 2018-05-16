@@ -9,6 +9,13 @@
 
 /* DNS 协议栈开辟缓存大小 */
 #define DNS_BUFFER_SIZE					256
+#define DNS_DATASTACK_SIZE				256
+#define DNS_HOSTNAME_SIZE				30
+#define DNS_HOSTIP_SIZE					17
+
+#define DNS_ANALYSIS_DATA				2
+#define DNS_ANALYSIS_HOSTNAME1			"movebroad.cn"
+#define DNS_ANALYSIS_HOSTNAME2			"bilibili.com"
 
 typedef struct DNS_SocketNetTypeDef		DNS_SocketNetTypeDef;
 typedef struct DNS_ClientsTypeDef			DNS_ClientsTypeDef;
@@ -18,10 +25,6 @@ typedef enum
 {
 	DNS_OK       						= 0x00,
 	DNS_ERROR    						= 0x01,
-	DNS_BUFFER_OVERFLOW					= 0x02,
-	DNS_RECVPACKET_NONE					= 0x03,
-	DNS_CMD_TIMEOUT					= 0x04,
-	DNS_MESSAGE_HANDLERS_FULL			= 0x05
 }DNS_StatusTypeDef;
 
 /* DNS Header 12Byte */
@@ -75,6 +78,14 @@ typedef struct
 	DNS_QuestionTypeDef*				ques;
 }DNS_QueryTypeDef;
 
+/* DNS Analysis Data */
+typedef struct
+{
+	unsigned char*						hostnameAddr;
+	unsigned char						hostname[DNS_HOSTNAME_SIZE];
+	unsigned char						hostIP[DNS_HOSTIP_SIZE];
+}DNS_AnalysisDataTypeDef;
+
 /* DNS Socket */
 struct DNS_SocketNetTypeDef
 {
@@ -98,11 +109,13 @@ struct DNS_ClientsTypeDef
 	size_t							Recvbuf_size;
 	short							Sendlen;
 	short							Recvlen;
+	unsigned char*						DataProcessStack;
+	size_t							DataProcessStack_size;
 	unsigned short						Command_Timeout_Sec;
 	unsigned short						Command_Failure_Cnt;
 	int								LetterCounter;
 	
-	
+	DNS_AnalysisDataTypeDef				AnalysisData[DNS_ANALYSIS_DATA];
 	
 	
 	
