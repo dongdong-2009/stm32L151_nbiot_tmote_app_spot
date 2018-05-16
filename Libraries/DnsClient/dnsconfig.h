@@ -13,9 +13,10 @@
 #define DNS_HOSTNAME_SIZE				30
 #define DNS_HOSTIP_SIZE					17
 
-#define DNS_ANALYSIS_DATA				2
+#define DNS_ANALYSIS_DATA				3
 #define DNS_ANALYSIS_HOSTNAME1			"movebroad.cn"
 #define DNS_ANALYSIS_HOSTNAME2			"bilibili.com"
+#define DNS_ANALYSIS_HOSTNAME3			"google.com"
 
 typedef struct DNS_SocketNetTypeDef		DNS_SocketNetTypeDef;
 typedef struct DNS_ClientsTypeDef			DNS_ClientsTypeDef;

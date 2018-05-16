@@ -180,8 +180,8 @@ void MainMajorCycle(void)
 	/* 日常处理 */
 	MainHandleRoutine();
 	
-	/* NBIOT APP Task */
-	NET_NBIOT_App_Task();
+	/* NBIOT Data Processing */
+	NET_NBIOT_DataProcessing();
 	
 	/* 喂狗 */
 	IWDG_Feed();
@@ -252,13 +252,6 @@ void MainRollingUpwardsActived(void)
 	/* NBIOT APP Task */
 	NET_NBIOT_App_Task();
 	
-	/* NBIOT PollExecution */
-#if NETPROTOCAL == NETCOAP
-	NET_COAP_APP_PollExecution(&NbiotClientHandler);
-#elif NETPROTOCAL == NETMQTTSN
-	NET_MQTTSN_APP_PollExecution(&MqttSNClientHandler);
-#endif
-	
 	/* 小无线处理 */
 	Radio_Trf_App_Task();
 }
@@ -319,13 +312,6 @@ void MainRollingEnteredDownSleepKeepActived(void)
 	
 	/* NBIOT APP Task */
 	NET_NBIOT_App_Task();
-	
-	/* NBIOT PollExecution */
-#if NETPROTOCAL == NETCOAP
-	NET_COAP_APP_PollExecution(&NbiotClientHandler);
-#elif NETPROTOCAL == NETMQTTSN
-	NET_MQTTSN_APP_PollExecution(&MqttSNClientHandler);
-#endif
 }
 
 /**********************************************************************************************************
@@ -438,7 +424,8 @@ void MainHandleRoutine(void)
 
 #ifdef	DEVICE_DEBUG
 /********************************************* DEBUG *****************************************************/
-
+u8 sendok = 0;
+u16 relen = 0;
 /****************************************** Debug Ending *************************************************/
 /**********************************************************************************************************
  @Function			void DeBugMain(void)
@@ -456,13 +443,38 @@ void DeBugMain(void)
 	DNS_Transport_Init(&DNSSocketNetHandler, &NbiotClientHandler, 5000, "114.114.114.114", 53);		//DNS数据传输接口初始化
 	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler);									//DNS客户端初始化
 	
-	DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
 	
-	DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
+	NBIOT_Neul_NBxx_HardwareReboot(DNSClientHandler.SocketStack->NBIotStack, 8000);
+	
+	
+	
+//	DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
+//	DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
 	
 	while (1) {
 		
+		NBIOT_Neul_NBxx_CheckReadAttachOrDetach(DNSClientHandler.SocketStack->NBIotStack);
+		if (DNSClientHandler.SocketStack->NBIotStack->Parameter.netstate == Attach) {
+			
+			DNSClientHandler.SocketStack->Open(DNSClientHandler.SocketStack);
+			
+			DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[1].hostname);
+			DNSClientHandler.SocketStack->Write(DNSClientHandler.SocketStack, (char *)DNSClientHandler.Sendbuf, DNSClientHandler.Sendlen);
+			
+			sendok = 1;
+		}
 		
+		if (sendok) {
+			sendok = 0;
+			
+			DNSClientHandler.SocketStack->Read(DNSClientHandler.SocketStack, (char *)DNSClientHandler.Recvbuf, DNSClientHandler.Recvbuf_size, (int *)&DNSClientHandler.Recvlen, (int *)&relen);
+			
+			if (DNSClientHandler.Recvlen != 0) {
+				
+				DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[1].hostname);
+				__NOP();
+			}
+		}
 		
 		
 		

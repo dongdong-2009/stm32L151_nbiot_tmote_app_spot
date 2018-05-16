@@ -32,6 +32,8 @@ extern NETMqttSNNeedSendCodeTypeDef NETMqttSNNeedSendCode;
 
 
 void NET_NBIOT_Initialization(void);										//NET初始化
+void NET_NBIOT_DataProcessing(void);										//NET数据处理
+void NET_NBIOT_TaskProcessing(void);										//NET工作处理
 void NET_NBIOT_App_Task(void);											//NET处理
 
 #endif

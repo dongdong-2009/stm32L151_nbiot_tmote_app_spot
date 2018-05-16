@@ -42,12 +42,12 @@ void NET_NBIOT_Initialization(void)
 }
 
 /**********************************************************************************************************
- @Function			void NET_NBIOT_App_Task(void)
- @Description			NET_NBIOT_App_Task							: NET处理
+ @Function			void NET_NBIOT_DataProcessing(void)
+ @Description			NET_NBIOT_DataProcessing						: NET数据处理
  @Input				void
  @Return				void
 **********************************************************************************************************/
-void NET_NBIOT_App_Task(void)
+void NET_NBIOT_DataProcessing(void)
 {
 #if NETPROTOCAL == NETCOAP
 	
@@ -277,6 +277,39 @@ void NET_NBIOT_App_Task(void)
 		TCFG_Utility_Add_MqttSN_SentCount();
 	}
 #endif
+}
+
+/**********************************************************************************************************
+ @Function			void NET_NBIOT_TaskProcessing(void)
+ @Description			NET_NBIOT_TaskProcessing						: NET工作处理
+ @Input				void
+ @Return				void
+**********************************************************************************************************/
+void NET_NBIOT_TaskProcessing(void)
+{
+	/* NBIOT PollExecution */
+#if NETPROTOCAL == NETCOAP
+	
+	NET_COAP_APP_PollExecution(&NbiotClientHandler);
+	
+#elif NETPROTOCAL == NETMQTTSN
+	
+	NET_MQTTSN_APP_PollExecution(&MqttSNClientHandler);
+	
+#endif
+}
+
+/**********************************************************************************************************
+ @Function			void NET_NBIOT_App_Task(void)
+ @Description			NET_NBIOT_App_Task							: NET处理
+ @Input				void
+ @Return				void
+**********************************************************************************************************/
+void NET_NBIOT_App_Task(void)
+{
+	NET_NBIOT_DataProcessing();											//数据处理
+	
+	NET_NBIOT_TaskProcessing();											//工作处理
 }
 
 /********************************************** END OF FLEE **********************************************/

@@ -1064,6 +1064,11 @@
               <FilePath>..\Hardware\NET\net_mqttsn_app.c</FilePath>
             </File>
             <File>
+              <FileName>net_dns_app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\NET\net_dns_app.c</FilePath>
+            </File>
+            <File>
               <FileName>net_nbiot_app.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Hardware\NET\net_nbiot_app.c</FilePath>
