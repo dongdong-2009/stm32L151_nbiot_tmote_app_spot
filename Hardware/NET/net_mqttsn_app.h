@@ -70,8 +70,4 @@ void NET_MQTTSN_Event_Sleep(MQTTSN_ClientsTypeDef* pClient);					//SLEEP
 void NET_MQTTSN_Event_Aweak(MQTTSN_ClientsTypeDef* pClient);					//AWAKE
 void NET_MQTTSN_Event_Lost(MQTTSN_ClientsTypeDef* pClient);						//LOST
 
-
-
-
-
 #endif

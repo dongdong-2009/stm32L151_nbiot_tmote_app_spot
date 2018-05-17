@@ -1,6 +1,9 @@
 # stm32L151_nbiot_tmote_app_spot
 movebroad Knagkang
 
+* 2018-05-17：
+	* 修复MqttSN在停止模式时处理bug，停止模式时对其他mqttSN数据包的支持。
+	* DNS初步与NB连接。
 * 2018-05-16 : 
 	* MQTTSN与COAP协议稳定，待增加下行处理，DNS解析开始架构
 	* DNS解析应用层开始架构，DNS解析库已完成

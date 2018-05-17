@@ -44,6 +44,7 @@ void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
 	
 	pClient->LetterCounter								= 0;
 	
+	pClient->AnalysisTick								= 0;
 	pClient->AnalysisData[0].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME1;
 	pClient->AnalysisData[1].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME2;
 	pClient->AnalysisData[2].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME3;
@@ -54,9 +55,7 @@ void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
 	
 	
 	
-	
-	
-	
+	pClient->ProcessState								= DNS_PROCESS_CREAT_UDP_SOCKET;
 	pClient->SocketStack								= NetSock;
 }
 

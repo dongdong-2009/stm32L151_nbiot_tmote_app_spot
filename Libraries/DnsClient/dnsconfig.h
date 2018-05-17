@@ -21,6 +21,15 @@
 typedef struct DNS_SocketNetTypeDef		DNS_SocketNetTypeDef;
 typedef struct DNS_ClientsTypeDef			DNS_ClientsTypeDef;
 
+/* DNS Is ProcessState */
+typedef enum
+{
+	DNS_PROCESS_CREAT_UDP_SOCKET			= 0x00,
+	DNS_PROCESS_SEND_DNS_STRUCT_DATA		= 0x01,
+	DNS_PROCESS_RECV_DNS_STRUCT_DATA		= 0x02,
+	DNS_PROCESS_CLOSE_UDP_SOCKET			= 0x03
+}DNS_ProcessStateTypeDef;
+
 /* DNS Status */
 typedef enum
 {
@@ -114,18 +123,17 @@ struct DNS_ClientsTypeDef
 	size_t							DataProcessStack_size;
 	unsigned short						Command_Timeout_Sec;
 	unsigned short						Command_Failure_Cnt;
+	
 	int								LetterCounter;
 	
+	unsigned char						AnalysisTick;
 	DNS_AnalysisDataTypeDef				AnalysisData[DNS_ANALYSIS_DATA];
 	
 	
 	
+	
+	DNS_ProcessStateTypeDef				ProcessState;
 	DNS_SocketNetTypeDef*				SocketStack;
-	
-	
-	
-	
-	
 };
 
 /* Application Programming Interface */

@@ -96,7 +96,8 @@ typedef enum
 	SEND_DATA							= 0x0E,											//发送数据
 	RECV_DATA							= 0x0F,											//接收数据
 	EXECUT_DOWNLINK_DATA				= 0x10,											//执行下行数据
-	MQTTSN_PROCESS_STACK				= 0x11											//MQTTSN执行栈
+	MQTTSN_PROCESS_STACK				= 0x11,											//MQTTSN执行栈
+	DNS_PROCESS_STACK					= 0x12											//DNS执行栈
 }NBIOT_DictateEventTypeDef;
 
 /* NBIOT CDP Server Address */
