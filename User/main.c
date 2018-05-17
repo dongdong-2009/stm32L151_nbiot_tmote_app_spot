@@ -47,6 +47,7 @@
 #include "dnsconfig.h"
 #include "dnsfunc.h"
 #include "dnstransport.h"
+#include "net_dns_app.h"
 
 DNS_SocketNetTypeDef		DNSSocketNetHandler;							//DNS Net Handler
 DNS_ClientsTypeDef			DNSClientHandler;								//DNS Clinet Handler
@@ -424,8 +425,7 @@ void MainHandleRoutine(void)
 
 #ifdef	DEVICE_DEBUG
 /********************************************* DEBUG *****************************************************/
-u8 sendok = 0;
-u16 relen = 0;
+
 /****************************************** Debug Ending *************************************************/
 /**********************************************************************************************************
  @Function			void DeBugMain(void)
@@ -444,37 +444,14 @@ void DeBugMain(void)
 	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler);									//DNS客户端初始化
 	
 	
-	NBIOT_Neul_NBxx_HardwareReboot(DNSClientHandler.SocketStack->NBIotStack, 8000);
 	
-	
-	
-//	DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
-//	DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[0].hostname);
 	
 	while (1) {
 		
-		NBIOT_Neul_NBxx_CheckReadAttachOrDetach(DNSClientHandler.SocketStack->NBIotStack);
-		if (DNSClientHandler.SocketStack->NBIotStack->Parameter.netstate == Attach) {
-			
-			DNSClientHandler.SocketStack->Open(DNSClientHandler.SocketStack);
-			
-			DNSSerialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[1].hostname);
-			DNSClientHandler.SocketStack->Write(DNSClientHandler.SocketStack, (char *)DNSClientHandler.Sendbuf, DNSClientHandler.Sendlen);
-			
-			sendok = 1;
-		}
 		
-		if (sendok) {
-			sendok = 0;
-			
-			DNSClientHandler.SocketStack->Read(DNSClientHandler.SocketStack, (char *)DNSClientHandler.Recvbuf, DNSClientHandler.Recvbuf_size, (int *)&DNSClientHandler.Recvlen, (int *)&relen);
-			
-			if (DNSClientHandler.Recvlen != 0) {
-				
-				DNSDeserialize_dnsDataStructure(&DNSClientHandler, DNSClientHandler.AnalysisData[1].hostname);
-				__NOP();
-			}
-		}
+		NET_DNS_APP_PollExecution(&DNSClientHandler);
+		
+		
 		
 		
 		

@@ -160,6 +160,9 @@ DNS_StatusTypeDef DNSSerialize_dnsDataStructure(DNS_ClientsTypeDef* pClient, uns
 	unsigned char* queryname;
 	DNS_QuestionTypeDef* queryinfo;
 	
+	/* Clean Letter Counter */
+	pClient->LetterCounter = 0;
+	
 	/* Set the dnsheader pointer to point at the beggining of the buffer */
 	DNS_HeaderTypeDef *dns = (DNS_HeaderTypeDef *)pClient->DataProcessStack;
 	memset((void*)pClient->DataProcessStack, 0, pClient->DataProcessStack_size);

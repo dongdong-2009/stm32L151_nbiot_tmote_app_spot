@@ -36,9 +36,9 @@ void NET_DNS_NBIOT_Event_AttachInquire(DNS_ClientsTypeDef* pClient);				//注网
 void NET_DNS_NBIOT_Event_PatameterCheckOut(DNS_ClientsTypeDef* pClient);			//参数检出
 
 void NET_DNS_APP_ProcessExecution(DNS_ClientsTypeDef* pClient);					//DNS协议逻辑处理
-
-
-
+void NET_DNS_Event_CreatUDPSocket(DNS_ClientsTypeDef* pClient);					//CreatUDPSocket
+void NET_DNS_Event_SendDnsStructData(DNS_ClientsTypeDef* pClient);				//SendDnsStructData
+void NET_DNS_Event_RecvDnsStructData(DNS_ClientsTypeDef* pClient);				//RecvDnsStructData
 
 
 

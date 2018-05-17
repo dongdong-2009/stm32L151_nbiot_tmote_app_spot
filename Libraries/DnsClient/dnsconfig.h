@@ -15,8 +15,13 @@
 
 #define DNS_ANALYSIS_DATA				3
 #define DNS_ANALYSIS_HOSTNAME1			"movebroad.cn"
+#define DNS_ANALYSIS_HOSTIP1				"106.14.142.169"
+
 #define DNS_ANALYSIS_HOSTNAME2			"bilibili.com"
+#define DNS_ANALYSIS_HOSTIP2				"42.96.146.169"
+
 #define DNS_ANALYSIS_HOSTNAME3			"google.com"
+#define DNS_ANALYSIS_HOSTIP3				"172.217.160.78"
 
 typedef struct DNS_SocketNetTypeDef		DNS_SocketNetTypeDef;
 typedef struct DNS_ClientsTypeDef			DNS_ClientsTypeDef;
@@ -93,6 +98,7 @@ typedef struct
 {
 	unsigned char*						hostnameAddr;
 	unsigned char						hostname[DNS_HOSTNAME_SIZE];
+	unsigned char*						hostIPAddr;
 	unsigned char						hostIP[DNS_HOSTIP_SIZE];
 }DNS_AnalysisDataTypeDef;
 
@@ -128,6 +134,20 @@ struct DNS_ClientsTypeDef
 	
 	unsigned char						AnalysisTick;
 	DNS_AnalysisDataTypeDef				AnalysisData[DNS_ANALYSIS_DATA];
+	
+	struct DNSDictateRuningCtlTypeDef
+	{
+		bool							dictateEnable;
+		unsigned int					dictateTimeoutSec;
+		unsigned char					dictateCreatUDPSocketFailureCnt;
+		unsigned char					dictateSendDnsStructDataFailureCnt;
+		unsigned char					dictateRecvDnsStructDataFailureCnt;
+		unsigned char					dictateCloseUDPSocketFailureCnt;
+		
+		
+		
+		Stm32_CalculagraphTypeDef		dictateRunTime;
+	}DictateRunCtl;
 	
 	
 	

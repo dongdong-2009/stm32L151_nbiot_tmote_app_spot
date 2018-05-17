@@ -46,12 +46,22 @@ void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
 	
 	pClient->AnalysisTick								= 0;
 	pClient->AnalysisData[0].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME1;
+	pClient->AnalysisData[0].hostIPAddr					= (unsigned char*)DNS_ANALYSIS_HOSTIP1;
 	pClient->AnalysisData[1].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME2;
+	pClient->AnalysisData[1].hostIPAddr					= (unsigned char*)DNS_ANALYSIS_HOSTIP2;
 	pClient->AnalysisData[2].hostnameAddr					= (unsigned char*)DNS_ANALYSIS_HOSTNAME3;
+	pClient->AnalysisData[2].hostIPAddr					= (unsigned char*)DNS_ANALYSIS_HOSTIP3;
 	for (unsigned char i = 0; i < DNS_ANALYSIS_DATA; i++) {
 		sprintf((char *)pClient->AnalysisData[i].hostname, "%s", pClient->AnalysisData[i].hostnameAddr);
+		sprintf((char *)pClient->AnalysisData[i].hostIP, "%s", pClient->AnalysisData[i].hostIPAddr);
 	}
 	
+	pClient->DictateRunCtl.dictateEnable					= false;
+	pClient->DictateRunCtl.dictateTimeoutSec				= 0;
+	pClient->DictateRunCtl.dictateCreatUDPSocketFailureCnt		= 0;
+	pClient->DictateRunCtl.dictateSendDnsStructDataFailureCnt	= 0;
+	pClient->DictateRunCtl.dictateRecvDnsStructDataFailureCnt	= 0;
+	pClient->DictateRunCtl.dictateCloseUDPSocketFailureCnt		= 0;
 	
 	
 	
