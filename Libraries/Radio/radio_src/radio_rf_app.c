@@ -364,6 +364,8 @@ char Radio_Rf_Operate_Recvmsg(uint8_t *inmsg, uint8_t len)
 					Radio_Trf_Printf("CGDCONT:%s", MqttSNClientHandler.SocketStack->NBIotStack->Parameter.cgdcont);
 					Radio_Trf_Printf("RSSI:%d", MqttSNClientHandler.SocketStack->NBIotStack->Parameter.rssi);
 					Radio_Trf_Printf("SNR:%d", MqttSNClientHandler.SocketStack->NBIotStack->Parameter.statisticsCELL.snr);
+					Radio_Trf_Printf("MqttSN HostName:%s", MQTTSN_SERVER_HOST_NAME);
+					Radio_Trf_Printf("MqttSN HostIP:%s:%d", MqttSNClientHandler.SocketStack->ServerHost, MqttSNClientHandler.SocketStack->ServerPort);
 				#endif
 					__NOP();
 				}

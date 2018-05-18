@@ -155,6 +155,7 @@ DNS_StatusTypeDef DNS_Transport_Init(DNS_SocketNetTypeDef* NetSock, NBIOT_Client
 	
 	NetSock->SocketHandler = -1;
 	NetSock->LocalPort = Localport;
+	memset((void*)NetSock->ServerHost, 0, sizeof(NetSock->ServerHost));
 	memcpy(NetSock->ServerHost, Serverhost, strlen(Serverhost));
 	NetSock->ServerPort = Serverport;
 	

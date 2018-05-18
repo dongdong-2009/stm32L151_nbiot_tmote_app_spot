@@ -155,6 +155,7 @@ MQTTSN_StatusTypeDef MQTTSN_Transport_Init(MQTTSN_SocketNetTypeDef* NetSock, NBI
 	
 	NetSock->SocketHandler = -1;
 	NetSock->LocalPort = Localport;
+	memset((void*)NetSock->ServerHost, 0, sizeof(NetSock->ServerHost));
 	memcpy(NetSock->ServerHost, Serverhost, strlen(Serverhost));
 	NetSock->ServerPort = Serverport;
 	

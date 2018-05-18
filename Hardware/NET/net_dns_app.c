@@ -982,6 +982,7 @@ void NET_DNS_Event_CreatUDPSocket(DNS_ClientsTypeDef* pClient)
 void NET_DNS_Event_SendDnsStructData(DNS_ClientsTypeDef* pClient)
 {
 	Stm32_CalculagraphTypeDef dictateRunTime;
+	unsigned char Sendhostname[DNS_HOSTNAME_SIZE];
 	
 	if (pClient->AnalysisTick < DNS_ANALYSIS_DATA) {
 		/* Have Domain name need to resolution */
@@ -995,7 +996,9 @@ void NET_DNS_Event_SendDnsStructData(DNS_ClientsTypeDef* pClient)
 		}
 		
 		/* Serialize dnsDataStructure Command Buffer */
-		DNSSerialize_dnsDataStructure(pClient, pClient->AnalysisData[pClient->AnalysisTick].hostname);
+		memset((void*)Sendhostname, 0, sizeof(Sendhostname));
+		memcpy(Sendhostname, pClient->AnalysisData[pClient->AnalysisTick].hostname, sizeof(pClient->AnalysisData[pClient->AnalysisTick].hostname));
+		DNSSerialize_dnsDataStructure(pClient, Sendhostname);
 		
 		/* Send dnsDataStructure Command Buffer to DNS Server */
 		if (pClient->SocketStack->Write(pClient->SocketStack, (char *)pClient->Sendbuf, pClient->Sendlen) != DNS_OK) {
@@ -1086,7 +1089,7 @@ void NET_DNS_Event_RecvDnsStructData(DNS_ClientsTypeDef* pClient)
 				pClient->ProcessState = DNS_PROCESS_RECV_DNS_STRUCT_DATA;
 			}
 #ifdef DNS_DEBUG_LOG_RF_PRINT
-			Radio_Trf_Debug_Printf("DNS Recv %s Fail", pClient->AnalysisData[pClient->AnalysisTick].hostnameAddr);
+			Radio_Trf_Debug_Printf("DNS Wait Recv %s", pClient->AnalysisData[pClient->AnalysisTick].hostnameAddr);
 #endif
 			return;
 		}
