@@ -25,13 +25,14 @@ unsigned char NBIOT_DataStack[NBIOT_DATASTACK_SIZE];
 NBIOT_BaudrateTypeDef NBIOTBaudRate;
 
 /**********************************************************************************************************
- @Function			void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack)
+ @Function			void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
  @Description			NBIOT_Client_Init						: 初始化NBIOT客户端
  @Input				pClient								: NBIOT客户端实例
 					ATCmdStack							: NBIOT AT 协议栈
+					NetNbiotStack							: NET NBIOT 协议栈
  @Return				void
 **********************************************************************************************************/
-void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack)
+void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
 {
 	pClient->Sendbuf									= NBIOT_SendBuf;
 	pClient->Recvbuf									= NBIOT_RecvBuf;
@@ -65,6 +66,7 @@ void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdS
 	pClient->DictateRunCtl.dictateEvent					= HARDWARE_REBOOT;
 	
 	pClient->ATCmdStack									= ATCmdStack;
+	pClient->NetNbiotStack								= NetNbiotStack;
 	
 	memset((void *)&pClient->Parameter, 0x0, sizeof(pClient->Parameter));
 }

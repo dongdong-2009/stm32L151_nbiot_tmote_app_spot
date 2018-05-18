@@ -39,8 +39,7 @@ void NET_DNS_APP_ProcessExecution(DNS_ClientsTypeDef* pClient);					//DNS协议�
 void NET_DNS_Event_CreatUDPSocket(DNS_ClientsTypeDef* pClient);					//CreatUDPSocket
 void NET_DNS_Event_SendDnsStructData(DNS_ClientsTypeDef* pClient);				//SendDnsStructData
 void NET_DNS_Event_RecvDnsStructData(DNS_ClientsTypeDef* pClient);				//RecvDnsStructData
-
-
-
+void NET_DNS_Event_CloseUDPSocket(DNS_ClientsTypeDef* pClient);					//CloseUDPSocket
+void NET_DNS_Event_OverDnsAnalysis(DNS_ClientsTypeDef* pClient);					//OverDnsAnalysis
 
 #endif

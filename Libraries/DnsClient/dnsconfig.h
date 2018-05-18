@@ -3,6 +3,7 @@
 
 #include "sys.h"
 #include "nbiotconfig.h"
+#include "net_nbiot_app.h"
 
 #define DNS_COMMAND_TIMEOUT_SEC			30
 #define DNS_COMMAND_FAILURE_CNT			3
@@ -17,11 +18,11 @@
 #define DNS_ANALYSIS_HOSTNAME1			"movebroad.cn"
 #define DNS_ANALYSIS_HOSTIP1				"106.14.142.169"
 
-#define DNS_ANALYSIS_HOSTNAME2			"bilibili.com"
-#define DNS_ANALYSIS_HOSTIP2				"42.96.146.169"
+#define DNS_ANALYSIS_HOSTNAME2			"mqtt.movebroad.cn"
+#define DNS_ANALYSIS_HOSTIP2				"47.98.140.145"
 
-#define DNS_ANALYSIS_HOSTNAME3			"google.com"
-#define DNS_ANALYSIS_HOSTIP3				"172.217.160.78"
+#define DNS_ANALYSIS_HOSTNAME3			"zhouqinghan.vip"
+#define DNS_ANALYSIS_HOSTIP3				"120.78.66.248"
 
 typedef struct DNS_SocketNetTypeDef		DNS_SocketNetTypeDef;
 typedef struct DNS_ClientsTypeDef			DNS_ClientsTypeDef;
@@ -32,7 +33,8 @@ typedef enum
 	DNS_PROCESS_CREAT_UDP_SOCKET			= 0x00,
 	DNS_PROCESS_SEND_DNS_STRUCT_DATA		= 0x01,
 	DNS_PROCESS_RECV_DNS_STRUCT_DATA		= 0x02,
-	DNS_PROCESS_CLOSE_UDP_SOCKET			= 0x03
+	DNS_PROCESS_CLOSE_UDP_SOCKET			= 0x03,
+	DNS_PROCESS_OVER_DNS_ANALYSIS			= 0x04
 }DNS_ProcessStateTypeDef;
 
 /* DNS Status */
@@ -143,39 +145,16 @@ struct DNS_ClientsTypeDef
 		unsigned char					dictateSendDnsStructDataFailureCnt;
 		unsigned char					dictateRecvDnsStructDataFailureCnt;
 		unsigned char					dictateCloseUDPSocketFailureCnt;
-		
-		
-		
+		unsigned char					dictateOverDnsAnalysis;
 		Stm32_CalculagraphTypeDef		dictateRunTime;
 	}DictateRunCtl;
 	
-	
-	
-	
 	DNS_ProcessStateTypeDef				ProcessState;
 	DNS_SocketNetTypeDef*				SocketStack;
+	NET_NBIOT_ClientsTypeDef*			NetNbiotStack;
 };
 
 /* Application Programming Interface */
-void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock);					//DNS客户端初始化
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack);		//DNS客户端初始化
 
 #endif

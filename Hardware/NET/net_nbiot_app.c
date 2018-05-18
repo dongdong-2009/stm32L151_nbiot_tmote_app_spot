@@ -16,6 +16,7 @@
 #include "net_nbiot_app.h"
 #include "net_coap_app.h"
 #include "net_mqttsn_app.h"
+#include "net_dns_app.h"
 #include "stm32l1xx_config.h"
 #include "platform_config.h"
 #include "platform_map.h"
@@ -34,20 +35,51 @@ NETMqttSNNeedSendCodeTypeDef	NETMqttSNNeedSendCode = NETMqttSNNeedSendCode_initi
 **********************************************************************************************************/
 void NET_NBIOT_Initialization(void)
 {
-	NBIOT_Transport_Init(&NbiotATCmdHandler);												//NBIOT数据传输接口初始化
-	NBIOT_Client_Init(&NbiotClientHandler, &NbiotATCmdHandler);									//NBIOT客户端初始化
+	/* NET NBIOT客户端初始化 */
+	NET_NBIOT_Client_Init(&NetNbiotClientHandler);
 	
-	MQTTSN_Transport_Init(&MqttSNSocketNetHandler, &NbiotClientHandler, 4000, "106.14.142.169", 1884);	//MqttSN数据传输接口初始化
-	MQTTSN_Client_Init(&MqttSNClientHandler, &MqttSNSocketNetHandler);							//MQTTSN客户端初始化
+	/* NBIOT数据传输接口初始化 */
+	NBIOT_Transport_Init(&NbiotATCmdHandler);
+	/* NBIOT客户端初始化 */
+	NBIOT_Client_Init(&NbiotClientHandler, &NbiotATCmdHandler, &NetNbiotClientHandler);
+	
+	/* DNS数据传输接口初始化 */
+	DNS_Transport_Init(&DNSSocketNetHandler, &NbiotClientHandler, DNS_SERVER_LOCAL_PORT, DNS_SERVER_HOST_IP, DNS_SERVER_TELE_PORT);
+	/* DNS客户端初始化 */
+	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler, &NetNbiotClientHandler);
+	
+	/* MqttSN数据传输接口初始化 */
+	MQTTSN_Transport_Init(&MqttSNSocketNetHandler, &NbiotClientHandler, MQTTSN_SERVER_LOCAL_PORT, MQTTSN_SERVER_HOST_IP, MQTTSN_SERVER_TELE_PORT);
+	/* MQTTSN客户端初始化 */
+	MQTTSN_Client_Init(&MqttSNClientHandler, &MqttSNSocketNetHandler, &NetNbiotClientHandler);
 }
 
 /**********************************************************************************************************
- @Function			void NET_NBIOT_DataProcessing(void)
+ @Function			void NET_NBIOT_Client_Init(NET_NBIOT_ClientsTypeDef* pClient)
+ @Description			NET_NBIOT_Client_Init					: 初始化NET NBIOT客户端
+ @Input				pClient								: NET NBIOT客户端实例
+ @Return				void
+**********************************************************************************************************/
+void NET_NBIOT_Client_Init(NET_NBIOT_ClientsTypeDef* pClient)
+{
+#if NETPROTOCAL == NETCOAP
+	
+	pClient->PollExecution								= NET_POLL_EXECUTION_COAP;
+	
+#elif NETPROTOCAL == NETMQTTSN
+	
+	pClient->PollExecution								= NET_POLL_EXECUTION_DNS;
+	
+#endif
+}
+
+/**********************************************************************************************************
+ @Function			void NET_NBIOT_DataProcessing(NET_NBIOT_ClientsTypeDef* pClient)
  @Description			NET_NBIOT_DataProcessing						: NET数据处理
  @Input				void
  @Return				void
 **********************************************************************************************************/
-void NET_NBIOT_DataProcessing(void)
+void NET_NBIOT_DataProcessing(NET_NBIOT_ClientsTypeDef* pClient)
 {
 #if NETPROTOCAL == NETCOAP
 	
@@ -280,21 +312,47 @@ void NET_NBIOT_DataProcessing(void)
 }
 
 /**********************************************************************************************************
- @Function			void NET_NBIOT_TaskProcessing(void)
+ @Function			void NET_NBIOT_TaskProcessing(NET_NBIOT_ClientsTypeDef* pClient)
  @Description			NET_NBIOT_TaskProcessing						: NET工作处理
  @Input				void
  @Return				void
 **********************************************************************************************************/
-void NET_NBIOT_TaskProcessing(void)
+void NET_NBIOT_TaskProcessing(NET_NBIOT_ClientsTypeDef* pClient)
 {
 	/* NBIOT PollExecution */
 #if NETPROTOCAL == NETCOAP
 	
-	NET_COAP_APP_PollExecution(&NbiotClientHandler);
+	switch (pClient->PollExecution)
+	{
+	case NET_POLL_EXECUTION_COAP:
+		NET_COAP_APP_PollExecution(&NbiotClientHandler);
+		break;
+	
+	case NET_POLL_EXECUTION_DNS:
+		pClient->PollExecution = NET_POLL_EXECUTION_COAP;
+		break;
+	
+	case NET_POLL_EXECUTION_MQTTSN:
+		pClient->PollExecution = NET_POLL_EXECUTION_COAP;
+		break;
+	}
 	
 #elif NETPROTOCAL == NETMQTTSN
 	
-	NET_MQTTSN_APP_PollExecution(&MqttSNClientHandler);
+	switch (pClient->PollExecution)
+	{
+	case NET_POLL_EXECUTION_COAP:
+		pClient->PollExecution = NET_POLL_EXECUTION_DNS;
+		break;
+	
+	case NET_POLL_EXECUTION_DNS:
+		NET_DNS_APP_PollExecution(&DNSClientHandler);
+		break;
+	
+	case NET_POLL_EXECUTION_MQTTSN:
+		NET_MQTTSN_APP_PollExecution(&MqttSNClientHandler);
+		break;
+	}
 	
 #endif
 }
@@ -307,9 +365,9 @@ void NET_NBIOT_TaskProcessing(void)
 **********************************************************************************************************/
 void NET_NBIOT_App_Task(void)
 {
-	NET_NBIOT_DataProcessing();											//数据处理
+	NET_NBIOT_DataProcessing(&NetNbiotClientHandler);							//数据处理
 	
-	NET_NBIOT_TaskProcessing();											//工作处理
+	NET_NBIOT_TaskProcessing(&NetNbiotClientHandler);							//工作处理
 }
 
 /********************************************** END OF FLEE **********************************************/

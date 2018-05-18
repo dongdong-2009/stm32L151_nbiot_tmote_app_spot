@@ -4,6 +4,7 @@
 #include "sys.h"
 #include "MQTTSNPacket.h"
 #include "nbiotconfig.h"
+#include "net_nbiot_app.h"
 
 #define MAX_MSG_ID						65535							/* according to the MQTT specification - do not change! */
 #define MAX_MESSAGE_HANDLERS				5								/* redefinable - how many subscriptions do you want? */
@@ -132,6 +133,7 @@ struct MQTTSN_ClientsTypeDef
 	
 	MQTTSN_SubStateTypeDef				SubState;
 	MQTTSN_SocketNetTypeDef*				SocketStack;
+	NET_NBIOT_ClientsTypeDef*			NetNbiotStack;
 	
 	Stm32_CalculagraphTypeDef			PingTimer;
 };
@@ -139,7 +141,7 @@ struct MQTTSN_ClientsTypeDef
 typedef MQTTSN_StatusTypeDef (*messageHandlerFp)(MQTTSN_ClientsTypeDef*, MQTTSN_MessageDataTypeDef*);
 
 /* Application Programming Interface */
-void MQTTSN_WaitforCallback(MQTTSN_ClientsTypeDef* pClient);									//MQTTSN数据等待接收回调函数
-void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock);			//MQTTSN客户端初始化
+void MQTTSN_WaitforCallback(MQTTSN_ClientsTypeDef* pClient);															//MQTTSN数据等待接收回调函数
+void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack);	//MQTTSN客户端初始化
 
 #endif

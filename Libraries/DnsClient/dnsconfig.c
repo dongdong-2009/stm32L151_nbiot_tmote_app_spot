@@ -22,13 +22,14 @@ unsigned char DNS_RecvBuf[DNS_BUFFER_SIZE];
 unsigned char DNS_DataStack[DNS_DATASTACK_SIZE];
 
 /**********************************************************************************************************
- @Function			void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
+ @Function			void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
  @Description			DNS_Client_Init						: 初始化DNS客户端
  @Input				pClient								: DNS客户端实例
 					NetSock								: DNS Socket 协议栈
+					NetNbiotStack							: NET NBIOT 协议栈
  @Return				void
 **********************************************************************************************************/
-void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
+void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
 {
 	pClient->Sendbuf									= DNS_SendBuf;
 	pClient->Recvbuf									= DNS_RecvBuf;
@@ -62,20 +63,11 @@ void DNS_Client_Init(DNS_ClientsTypeDef* pClient, DNS_SocketNetTypeDef* NetSock)
 	pClient->DictateRunCtl.dictateSendDnsStructDataFailureCnt	= 0;
 	pClient->DictateRunCtl.dictateRecvDnsStructDataFailureCnt	= 0;
 	pClient->DictateRunCtl.dictateCloseUDPSocketFailureCnt		= 0;
-	
-	
+	pClient->DictateRunCtl.dictateOverDnsAnalysis			= 0;
 	
 	pClient->ProcessState								= DNS_PROCESS_CREAT_UDP_SOCKET;
 	pClient->SocketStack								= NetSock;
+	pClient->NetNbiotStack								= NetNbiotStack;
 }
-
-
-
-
-
-
-
-
-
 
 /********************************************** END OF FLEE **********************************************/

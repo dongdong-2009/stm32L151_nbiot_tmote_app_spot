@@ -9,6 +9,8 @@ unsigned long int ntohl(unsigned long int n);															//网络字节序转
 unsigned short int htons(unsigned short int h);															//本机字节序转网络字节序(u16)
 unsigned short int ntohs(unsigned short int n);															//网络字节序转本机字节序(u16)
 
+unsigned char* DNS_GetHostIP(DNS_ClientsTypeDef* pClient, unsigned char* hostname);								//获取转换IP地址
+
 DNS_StatusTypeDef DNS_Seperate(DNS_ClientsTypeDef* pClient, unsigned char* name, unsigned char* host);				//将主机名格式化为DNS查询格式
 
 DNS_StatusTypeDef DNS_ConvertIP(DNS_ClientsTypeDef* pClient, int ip, unsigned char* hostname);						//转换并填入IP地址

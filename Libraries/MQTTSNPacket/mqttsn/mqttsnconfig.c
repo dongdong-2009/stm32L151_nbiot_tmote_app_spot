@@ -35,13 +35,14 @@ void MQTTSN_WaitforCallback(MQTTSN_ClientsTypeDef* pClient)
 }
 
 /**********************************************************************************************************
- @Function			void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock)
+ @Function			void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
  @Description			MQTTSN_Client_Init						: 初始化MQTTSN客户端
  @Input				pClient								: MQTTSN客户端实例
 					NetSock								: MQTTSN Socket 协议栈
+					NetNbiotStack							: NET NBIOT 协议栈
  @Return				void
 **********************************************************************************************************/
-void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock)
+void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef* NetSock, NET_NBIOT_ClientsTypeDef* NetNbiotStack)
 {
 	pClient->Sendbuf									= MQTTSN_SendBuf;
 	pClient->Recvbuf									= MQTTSN_RecvBuf;
@@ -76,6 +77,7 @@ void MQTTSN_Client_Init(MQTTSN_ClientsTypeDef* pClient, MQTTSN_SocketNetTypeDef*
 	pClient->defaultMessageHandler						= NULL;
 	pClient->SubState									= MQTTSN_SUBSTATE_INIT;
 	pClient->SocketStack								= NetSock;
+	pClient->NetNbiotStack								= NetNbiotStack;
 	
 	for (int i = 0; i < MAX_MESSAGE_HANDLERS; i++) {
 		pClient->messageHandlers[i].topicFilter				= NULL;

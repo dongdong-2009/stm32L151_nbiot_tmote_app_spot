@@ -29,6 +29,7 @@
 #include "hal_vptat.h"
 #include "hal_temperature.h"
 #include "hal_qmc5883l.h"
+#include "net_dns_app.h"
 #include "net_coap_app.h"
 #include "net_mqttsn_app.h"
 #include "net_nbiot_app.h"
@@ -44,13 +45,6 @@
 //#define	DEVICE_DEBUG													//定义开启设备调试
 /********************************************* DEBUG *****************************************************/
 #ifdef	DEVICE_DEBUG
-#include "dnsconfig.h"
-#include "dnsfunc.h"
-#include "dnstransport.h"
-#include "net_dns_app.h"
-
-DNS_SocketNetTypeDef		DNSSocketNetHandler;							//DNS Net Handler
-DNS_ClientsTypeDef			DNSClientHandler;								//DNS Clinet Handler
 
 void DeBugMain(void);
 #endif
@@ -182,7 +176,7 @@ void MainMajorCycle(void)
 	MainHandleRoutine();
 	
 	/* NBIOT Data Processing */
-	NET_NBIOT_DataProcessing();
+	NET_NBIOT_DataProcessing(&NetNbiotClientHandler);
 	
 	/* 喂狗 */
 	IWDG_Feed();
@@ -437,22 +431,8 @@ void DeBugMain(void)
 {
 	TCFG_EEPROM_SetBootCount(0);
 	
-	NBIOT_Transport_Init(&NbiotATCmdHandler);												//NBIOT数据传输接口初始化
-	NBIOT_Client_Init(&NbiotClientHandler, &NbiotATCmdHandler);									//NBIOT客户端初始化
-	
-	DNS_Transport_Init(&DNSSocketNetHandler, &NbiotClientHandler, 5000, "114.114.114.114", 53);		//DNS数据传输接口初始化
-	DNS_Client_Init(&DNSClientHandler, &DNSSocketNetHandler);									//DNS客户端初始化
-	
-	
-	
 	
 	while (1) {
-		
-		
-		NET_DNS_APP_PollExecution(&DNSClientHandler);
-		
-		
-		
 		
 		
 		

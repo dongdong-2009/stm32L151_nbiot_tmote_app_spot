@@ -2,6 +2,7 @@
 #define   __NBIOT_CONFIG_H
 
 #include "sys.h"
+#include "net_nbiot_app.h"
 
 #define NBIOT_RESET_GPIOx				GPIOB
 #define NBIOT_RESET_PIN					GPIO_PIN_2
@@ -252,10 +253,11 @@ struct NBIOT_ClientsTypeDef
 	
 	NBIOT_ParameterTypeDef				Parameter;
 	NBIOT_ATCmdTypeDef*					ATCmdStack;
+	NET_NBIOT_ClientsTypeDef*			NetNbiotStack;
 };
 
-extern NBIOT_BaudrateTypeDef NBIOTBaudRate;;													//NBIOT波特率计算
+extern NBIOT_BaudrateTypeDef NBIOTBaudRate;;																		//NBIOT波特率计算
 
-void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack);				//NBIOT客户端初始化
+void NBIOT_Client_Init(NBIOT_ClientsTypeDef* pClient, NBIOT_ATCmdTypeDef* ATCmdStack, NET_NBIOT_ClientsTypeDef* NetNbiotStack);	//NBIOT客户端初始化
 
 #endif

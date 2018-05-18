@@ -1,7 +1,9 @@
 # stm32L151_nbiot_tmote_app_spot
 movebroad Knagkang
 
-* 2018-05-17：
+* 2018-05-18 :
+	* DNS域名解析完成，服务器为114.114.114.114:53,解析mqttSN域名为"movebroad.cn"。
+* 2018-05-17 ：
 	* 修复MqttSN在停止模式时处理bug，停止模式时对其他mqttSN数据包的支持。
 	* DNS初步与NB连接。
 * 2018-05-16 : 

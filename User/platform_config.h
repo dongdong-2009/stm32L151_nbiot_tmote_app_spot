@@ -4,6 +4,7 @@
 #include "sys.h"
 #include "net_coap_app.h"
 #include "net_mqttsn_app.h"
+#include "net_dns_app.h"
 
 //#define	MVB_SUBSN						0x85000001						//设备号
 //#define	MVB_BRAND						"mvb"							//厂牌
@@ -32,7 +33,7 @@
 #define	RADIO_SI4438													//无线开启
 
 #define	SOFTWAREMAJOR					20								//主固件版本
-#define	SOFTWARESUB					57								//从固件版本
+#define	SOFTWARESUB					59								//从固件版本
 #define	HARDWAREMAJOR_V1				2								//主硬件版本
 #define	HARDWAREMAJOR_V2				12								//主硬件版本
 
@@ -43,6 +44,15 @@
 #define	NORMAL_WORK					0								//正常工作模式
 
 #define	TIME_TO_MODULE_INIT				3600*24*3							//间隔时间初始化模块
+
+#define	DNS_SERVER_HOST_IP				"114.114.114.114"					//DNS服务器默认配置
+#define	DNS_SERVER_LOCAL_PORT			5000
+#define	DNS_SERVER_TELE_PORT			53
+
+#define	MQTTSN_SERVER_HOST_NAME			"movebroad.cn"						//MQTTSN服务器默认配置
+#define	MQTTSN_SERVER_HOST_IP			"106.14.142.169"
+#define	MQTTSN_SERVER_LOCAL_PORT			4000
+#define	MQTTSN_SERVER_TELE_PORT			1884
 
 extern bool BootUp;														//BootUp
 extern bool DeviceIdleMode;												//IDLE MODE
@@ -59,11 +69,13 @@ extern MQTTSN_InfoBasicTypeDef			MqttSNInfoBasicStructure;			//MqttSN Basic Info
 extern MQTTSN_InfoDynamicTypeDef			MqttSNInfoDynamicStructure;			//MqttSN Dynamic Info Packet
 extern MQTTSN_InfoRadarTypeDef			MqttSNInfoRadarStructure;			//MqttSN Radar Info Packet
 
+extern NET_NBIOT_ClientsTypeDef			NetNbiotClientHandler;				//NET NBIOT Clinet Handler
 extern NBIOT_ATCmdTypeDef				NbiotATCmdHandler;					//NBIOT AT Cmd Handler
 extern NBIOT_ClientsTypeDef				NbiotClientHandler;					//Coap Clinet Handler
 extern MQTTSN_SocketNetTypeDef			MqttSNSocketNetHandler;				//MqttSN Net Handler
 extern MQTTSN_ClientsTypeDef				MqttSNClientHandler;				//MqttSN Clinet Handler
-
+extern DNS_SocketNetTypeDef				DNSSocketNetHandler;				//DNS Net Handler
+extern DNS_ClientsTypeDef				DNSClientHandler;					//DNS Clinet Handler
 
 
 

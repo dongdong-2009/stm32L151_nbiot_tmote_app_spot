@@ -35,11 +35,13 @@ MQTTSN_InfoDynamicTypeDef	MqttSNInfoDynamicStructure;						//MqttSN Dynamic Info
 MQTTSN_InfoRadarTypeDef		MqttSNInfoRadarStructure;						//MqttSN Radar Info Packet
 
 /* NET Handler */
+NET_NBIOT_ClientsTypeDef		NetNbiotClientHandler;							//NET NBIOT Clinet Handler
 NBIOT_ATCmdTypeDef			NbiotATCmdHandler;								//NBIOT AT Cmd Handler
 NBIOT_ClientsTypeDef		NbiotClientHandler;								//Coap Clinet Handler
 MQTTSN_SocketNetTypeDef		MqttSNSocketNetHandler;							//MqttSN Net Handler
 MQTTSN_ClientsTypeDef		MqttSNClientHandler;							//MqttSN Clinet Handler
-
+DNS_SocketNetTypeDef		DNSSocketNetHandler;							//DNS Net Handler
+DNS_ClientsTypeDef			DNSClientHandler;								//DNS Clinet Handler
 
 
 

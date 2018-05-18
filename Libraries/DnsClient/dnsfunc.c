@@ -146,6 +146,25 @@ DNS_StatusTypeDef DNS_ConvertIP(DNS_ClientsTypeDef* pClient, int ip, unsigned ch
 }
 
 /**********************************************************************************************************
+ @Function			unsigned char* DNS_GetHostIP(DNS_ClientsTypeDef* pClient, unsigned char* hostname)
+ @Description			DNS_GetHostIP					: 获取转换IP地址
+ @Input				pClient						: DNS客户端实例
+					hostname						: DNS查询主机名
+ @Return				hospIP						: DNS解析IP
+**********************************************************************************************************/
+unsigned char* DNS_GetHostIP(DNS_ClientsTypeDef* pClient, unsigned char* hostname)
+{
+	for (unsigned char i = 0; i < DNS_ANALYSIS_DATA; i++) {
+		if (strcmp((char *)pClient->AnalysisData[i].hostname, (char *)hostname) == 0) {
+			
+			return pClient->AnalysisData[i].hostIP;
+		}
+	}
+	
+	return pClient->AnalysisData[0].hostIP;
+}
+
+/**********************************************************************************************************
  @Function			DNS_StatusTypeDef DNSSerialize_dnsDataStructure(DNS_ClientsTypeDef* pClient, unsigned char* hostname)
  @Description			DNSSerialize_dnsDataStructure		: 序列化DNS数据结构体
  @Input				pClient						: DNS客户端实例
